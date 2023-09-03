@@ -321,7 +321,7 @@ function start(e) {
 
 
         playerLength = 2
-        playerLoc[188] = playerLength
+        playerLoc[90] = playerLength
         drawPlayer(playerLoc)
         drawFood(foodLocation)
         getPlayerLocation()
