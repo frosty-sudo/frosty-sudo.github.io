@@ -1,0 +1,49 @@
+[
+    {
+        "height": 50,
+        "width": 198,
+        "startX": 129,
+        "startY": 324,
+        "fx": 129,
+        "fy": 224,
+        "speed": 10,
+        "osilating": true,
+        "spawner": true,
+        "goal": false,
+        "trigger": false
+    },
+    {
+        "height": 50,
+        "width": 173,
+        "startX": 352.5,
+        "startY": 310,
+        "fx": 460,
+        "fy": 310,
+        "speed": 10,
+        "osilating": true,
+        "spawner": false,
+        "goal": false,
+        "trigger": false,
+        "trapArray": [
+            {
+                "type": "spike",
+                "x": 0,
+                "y": -25,
+                "facing": 38
+            }
+        ]
+    },
+    {
+        "height": 50,
+        "width": 108,
+        "startX": 622,
+        "startY": 289.5,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": true,
+        "trigger": false
+    }
+]

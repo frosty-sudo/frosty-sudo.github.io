@@ -1,0 +1,61 @@
+[
+    {
+        "height": 72,
+        "width": 800,
+        "startX": 400,
+        "startY": 329,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": [
+            {
+                "type": "frog",
+                "x": 0,
+                "y": -46
+            },
+            {
+                "type": "spike",
+                "x": 0,
+                "y": -36,
+                "facing": 38
+
+            },
+            {
+                "type": "spike",
+                "x": 30,
+                "y": -36,
+                "facing": 38
+
+            }
+        ]
+    },
+    {
+        "height": 72,
+        "width": 100,
+        "startX": 50,
+        "startY": 329,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": true,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 72,
+        "width": 100,
+        "startX": 750,
+        "startY": 329,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": true,
+        "trapArray": []
+    }
+]

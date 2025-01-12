@@ -1,0 +1,72 @@
+[
+    {
+        "height": 78,
+        "width": 203,
+        "startX": 101.5,
+        "startY": 245,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": true,
+        "goal": false
+    },
+    {
+        "height": 63,
+        "width": 228,
+        "startX": 395,
+        "startY": 308.5,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false
+    },
+    {
+        "height": 44,
+        "width": 155,
+        "startX": 724.5,
+        "startY": 105,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": true
+    },
+    {
+        "height": 33,
+        "width": 93,
+        "startX": 581.5,
+        "startY": 281.5,
+        "fx": 581.5,
+        "fy": 100,
+        "speed": 20,
+        "osilating": false,
+        "spawner": false,
+        "goal": false
+    },
+    {
+        "height": 20,
+        "width": 40,
+        "startX": 400,
+        "startY": 303.5,
+        "fx": 400,
+        "fy": 287,
+        "speed": 100,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": [
+            {
+                "x": 0,
+                "y": -10,
+                "facing": 38,
+                "height": 10,
+                "width": 30
+            }
+        ]
+    }
+    
+]

@@ -1,0 +1,290 @@
+[
+    {
+        "height": 400,
+        "width": 500,
+        "startX": -200,
+        "startY": 200,
+        "fx": 205,
+        "fy": 200,
+        "speed": 10,
+        "osilating": true,
+        "spawner": false,
+        "goal": false,
+        "trapArray": [
+            {
+                "type": "spike",
+                "x": 250,
+                "y": -185,
+                "facing": 39
+            },
+            {
+                "type": "spike",
+                "x": 250,
+                "y": -155,
+                "facing": 39
+            },
+            {
+                "type": "spike",
+                "x": 250,
+                "y": -125,
+                "facing": 39
+            },
+            {
+                "type": "spike",
+                "x": 250,
+                "y": -95,
+                "facing": 39
+            },
+            {
+                "type": "spike",
+                "x": 250,
+                "y": -65,
+                "facing": 39
+            },
+            {
+                "type": "spike",
+                "x": 250,
+                "y": -35,
+                "facing": 39
+            },
+            {
+                "type": "spike",
+                "x": 250,
+                "y": -5,
+                "facing": 39
+            },
+            {
+                "type": "spike",
+                "x": 250,
+                "y": 25,
+                "facing": 39
+            },
+            {
+                "type": "spike",
+                "x": 250,
+                "y": 55,
+                "facing": 39
+            },
+            {
+                "type": "spike",
+                "x": 250,
+                "y": 85,
+                "facing": 39
+            },
+            {
+                "type": "spike",
+                "x": 250,
+                "y": 115,
+                "facing": 39
+            },
+            {
+                "type": "spike",
+                "x": 250,
+                "y": 145,
+                "facing": 39
+            },
+            {
+                "type": "spike",
+                "x": 250,
+                "y": 175,
+                "facing": 39
+            },
+            {
+                "type": "spike",
+                "x": 250,
+                "y": 205,
+                "facing": 39
+            }
+
+        ]
+    },
+    {
+        "height": 400,
+        "width": 500,
+        "startX": 1000,
+        "startY": 200,
+        "fx": 595,
+        "fy": 200,
+        "speed": 10,
+        "osilating": true,
+        "spawner": false,
+        "goal": false,
+        "trapArray": [
+            {
+                "type": "spike",
+                "x": -250,
+                "y": -185,
+                "facing": 37
+            },
+            {
+                "type": "spike",
+                "x": -250,
+                "y": -155,
+                "facing": 37
+            },
+            {
+                "type": "spike",
+                "x": -250,
+                "y": -125,
+                "facing": 37
+            },
+            {
+                "type": "spike",
+                "x": -250,
+                "y": -95,
+                "facing": 37
+            },
+            {
+                "type": "spike",
+                "x": -250,
+                "y": -65,
+                "facing": 37
+            },
+            {
+                "type": "spike",
+                "x": -250,
+                "y": -35,
+                "facing": 37
+            },
+            {
+                "type": "spike",
+                "x": -250,
+                "y": -5,
+                "facing": 37
+            },
+            {
+                "type": "spike",
+                "x": -250,
+                "y": 25,
+                "facing": 37
+            },
+            {
+                "type": "spike",
+                "x": -250,
+                "y": 55,
+                "facing": 37
+            },
+            {
+                "type": "spike",
+                "x": -250,
+                "y": 85,
+                "facing": 37
+            },
+            {
+                "type": "spike",
+                "x": -250,
+                "y": 115,
+                "facing": 37
+            },
+            {
+                "type": "spike",
+                "x": -250,
+                "y": 145,
+                "facing": 37
+            },
+            {
+                "type": "spike",
+                "x": -250,
+                "y": 175,
+                "facing": 37
+            },
+            {
+                "type": "spike",
+                "x": -250,
+                "y": 205,
+                "facing": 37
+            }
+        ]
+    },
+    {
+        "height": 30,
+        "width": 101,
+        "startX": 332.5,
+        "startY": 349,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": true,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 34,
+        "width": 87,
+        "startX": 471.5,
+        "startY": 325,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 23,
+        "width": 58,
+        "startX": 562,
+        "startY": 295.5,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 20,
+        "width": 37,
+        "startX": 478.5,
+        "startY": 266,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 19,
+        "width": 70,
+        "startX": 378,
+        "startY": 250.5,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 18,
+        "width": 57,
+        "startX": 295.5,
+        "startY": 221,
+        "fx": 295.5,
+        "fy": 170,
+        "speed": 2,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 28,
+        "width": 73,
+        "startX": 404.5,
+        "startY": 177,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": true,
+        "trapArray": []
+    }
+]

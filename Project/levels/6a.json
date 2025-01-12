@@ -1,0 +1,94 @@
+[
+    {
+        "height": 50,
+        "width": 112,
+        "startX": 56,
+        "startY": 322.5,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": true,
+        "goal": false,
+        "trapArray": [
+            {
+                "type": "button",
+                "x": 25,
+                "y": -30,
+                "facing": 38,
+                "lambda": [
+                    "reverseControls",
+                    "6aMoveBlock"
+                ]
+            },
+            {
+                "type": "spike",
+                "x": -25,
+                "y": -25,
+                "facing": 38
+            }
+        ]
+    },
+    {
+        "height": 166,
+        "width": 59,
+        "startX": 141.5,
+        "startY": 264.5,
+        "fx": 141.5,
+        "fy": -1e+65,
+        "speed": 100,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 50,
+        "width": 142,
+        "startX": 339,
+        "startY": 322.5,
+        "fx": 204.5,
+        "fy": 322.5,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 50,
+        "width": 172,
+        "startX": 537,
+        "startY": 322.5,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": [
+            {
+                "type": "button",
+                "x": -55,
+                "y": -30,
+                "facing": 38,
+                "lambda": [
+                    "reverseControls"
+                ]
+            }
+        ]
+    },
+    {
+        "height": 50,
+        "width": 92,
+        "startX": 669,
+        "startY": 322.5,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": true,
+        "trapArray": []
+    }
+]

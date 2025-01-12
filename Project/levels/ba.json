@@ -1,0 +1,28 @@
+[
+    {
+        "height": 30,
+        "width": 140,
+        "startX": 400,
+        "startY": 44.5,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": true,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 30,
+        "width": 30,
+        "startX": 400,
+        "startY": 400,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": true,
+        "trapArray": []
+    }
+]
