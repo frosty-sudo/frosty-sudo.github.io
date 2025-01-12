@@ -590,8 +590,8 @@ class Player extends Platform {
       reload()
     }
 
-    collisionHandeler(placedObjects)
     this.grounded = false;
+    collisionHandeler(placedObjects)
 
   }
 
