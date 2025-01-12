@@ -511,7 +511,6 @@ class Player extends Platform {
     // fill(255, 0, 0)
     // rect(this.x - this.width/2, this.y - this.height/2, this.width, this.height)
     
-    collisionHandeler(placedObjects)
     
     let velocities = ((this.grounded != false) ? this.grounded.getVelocities() : [0, 0])
     let vx = velocities[0]
@@ -591,7 +590,9 @@ class Player extends Platform {
       reload()
     }
 
+    collisionHandeler(placedObjects)
     this.grounded = false;
+
   }
 
   // The players jump command checks if player is on the ground and that they havent released the jump key effectively making them press it again so repeated jumps arent as regular. This raises the difficulty of the game quite a bit since consistency between jumps are much harder.
