@@ -764,17 +764,16 @@ function reload() {
   playerDeath.setFrame(0)
   playerDeath.play()
   // fade = 
-  console.log(currentLevel, levels.length)
-  if (currentLevel == levels.length) {
-    clearInterval(timeLoop)
-    if (localStorage.getItem("highScore") == null) {
-      localStorage.setItem("highScore", time)
-    }
-    if (time != 0 && time < Number(localStorage.getItem("highScore"))) {
-      localStorage.setItem("highScore", time)
-    }
-    return
-  }
+  console.log(currentLevel, levels.length, "from reload")
+  // if (currentLevel == levels.length) {
+  //   if (localStorage.getItem("highScore") == null) {
+  //     localStorage.setItem("highScore", time)
+  //   }
+  //   if (time != 0 && time < Number(localStorage.getItem("highScore"))) {
+  //     localStorage.setItem("highScore", time)
+  //   }
+  //   return
+  // }
 
 
 
@@ -797,13 +796,12 @@ function switchLevels() {
   playerDeath.setFrame(0)
   playerDeath.play()
   // fade = 
-  console.log(currentLevel, levels.length)
+  console.log(currentLevel, levels.length, "from switchLevels")
   if (currentLevel == levels.length) {
-    clearInterval(timeLoop)
     if (localStorage.getItem("highScore") == null) {
       localStorage.setItem("highScore", time)
     }
-    if (time != 0 && time < Number(localStorage.getItem("highScore"))) {
+    if (time != null && time < Number(localStorage.getItem("highScore"))) {
       localStorage.setItem("highScore", time)
     }
     return
@@ -908,10 +906,8 @@ function draw() {
           // reload()
           if (currentLevel == 0) {
             time = 0
-            clearInterval(timeLoop)
-            timeLoop = setInterval(() => {
-              time += 1
-            },10)
+          } else {
+            time = null
           }
           fadeInFunction()
           new level(levels[i]).load()
@@ -1053,9 +1049,9 @@ function draw() {
     fill(255,255,0)
     text("YOU WON", 400,150)
     fill(255)
-    if (time > 0) {
-      text("Time: " + time/100, 400, 250)
-      text("High score time: " + (Number(localStorage.getItem("highScore"))/100), 400, 400-5)
+    if (time != null) {
+      text("Time: " + (time/1000).toFixed(2), 400, 250)
+      text("High score time: " + (Number(localStorage.getItem("highScore"))/1000).toFixed(2), 400, 400-5)
     }
     // toHome()
     return
@@ -1110,6 +1106,7 @@ function draw() {
   }
   
   // Draws the player as well as all of the objects in the objectList array.
+  time = time == null ? null : time + deltaTime
   goal.draw()
   for (let i = 0; i < placedObjects.length; i++) {
     placedObjects[i].draw()
@@ -1123,8 +1120,8 @@ function draw() {
   textAlign(LEFT)
   textSize(32)
   textFont(font)
-  if (time != 0) {
-    text(time / 100, 150,50)
+  if (time != null) {
+    text((time / 1000).toFixed(2), 150,50)
   }
 
   text(levels[currentLevel], 70, 50)
@@ -1777,7 +1774,6 @@ function toHome(btn, machineBtn){
     inLevelSelect = true
     // inMenu = true
     clearInterval(loop)
-    clearInterval(timeLoop)
     time = 0
     snakeArray = null
     // showRect = !showRect
@@ -1789,7 +1785,6 @@ function toHome(btn, machineBtn){
 
   } else {
     clearInterval(loop)
-    clearInterval(timeLoop)
     time = 0
     snakeArray = null
     showRect = !showRect
