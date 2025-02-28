@@ -361,6 +361,7 @@ class Platform {
           // rect(xoff - width / 2, yoff - height / 2, width, height)
           // image(enemyCobra, xoff - width / 2-15, yoff - height / 2-15)
           if (abs(this.trapArray[i].x) > this.width / 2 - width / 2) {
+            this.trapArray[i].x = abs(this.trapArray[i].getVel()) == this.trapArray[i].getVel() ? this.width / 2 - width / 2 - 1 : -(this.width / 2 - width / 2 - 1)
             this.trapArray[i].setVel(this.trapArray[i].getVel() * -1)
           }
           this.trapArray[i].x += 1 * this.trapArray[i].getVel()*deltaTime
@@ -862,6 +863,7 @@ function draw() {
   //   playingmusic.play()
   // }
 
+  deltaTime = deltaTime > 100 ? 0 : deltaTime
   outputVolume(volume)
   if (inLevelSelect) {
     unlockedLevels = localStorage.getItem("levels") != "" ? Number(localStorage.getItem("levels")) : 0
