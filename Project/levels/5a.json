@@ -1,9 +1,9 @@
 [
     {
-        "height": 35,
+        "height": 42,
         "width": 100,
         "startX": 276.5,
-        "startY": 300,
+        "startY": 350,
         "fx": null,
         "fy": null,
         "speed": 10,
@@ -14,16 +14,16 @@
             {
                 "type": "frog",
                 "x": 20,
-                "y": -27.5
+                "y": -31
             }
 
         ]
     },
     {
-        "height": 35,
+        "height": 42,
         "width": 100,
         "startX": 549.5,
-        "startY": 300,
+        "startY": 350,
         "fx": null,
         "fy": null,
         "speed": 10,
@@ -34,16 +34,16 @@
             {
                 "type": "frog",
                 "x": 0,
-                "y": -27.5
+                "y": -31
             }
 
         ]
     },
     {
-        "height": 35,
+        "height": 42,
         "width": 100,
         "startX": 750,
-        "startY": 300,
+        "startY": 350,
         "fx": null,
         "fy": null,
         "speed": 10,
@@ -53,12 +53,12 @@
         "trapArray": []
     },
     {
-        "height": 35,
+        "height": 42,
         "width": 100,
         "startX": 50,
-        "startY": 300,
+        "startY": 350,
         "fx": 655,
-        "fy": 300,
+        "fy": 350,
         "speed": 10,
         "osilating": false,
         "spawner": true,
