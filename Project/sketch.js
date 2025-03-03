@@ -2,39 +2,39 @@
 // Makes all of the appropriate variables.
 
 // Physics variables
-let loop
-let inMenu = true, inLevelSelect = false
-let edit = true;
-let mode = "select"
-let placedObjects = []
+let bossSnakeLoop
+let inMenu = true, isLevelSelect = false
+let isEditMode = true;
+let toolMode = "select"
+let objectList = []
 let selectedObject = null
 let released = true;
 let player;
 let goal;
-let x, y, dragged = false
+let mousePosX, mousePosY, isDragging = false
 let playerIdle, playerRun, goalBubble, playerDeath
 let currentLevel = 0, unlockedLevels = localStorage.getItem("levels") != "" ? Number(localStorage.getItem("levels")) : 0
-let levels = ["1a", "2a", "3a", "4a", "5a", "6a", "7a", "8a", "ba"]
+let chapterOneLevels = ["1a", "2a", "3a", "4a", "5a", "6a", "7a", "8a", "ba"]
 let fade = {
   level: 0,
   in : false
 }
-let snakeArray, snakeLength = 20
+let bossCycleArray, bossLength = 20
 let time = 0, timeLoop
 let button
-let controlSchemes = [39, 68, 37, 65, 38, 87]
-let playingmusic
-let enemyCobra
+let keyboardControls = [39, 68, 37, 65, 38, 87]
+let isPlayingmusic
+let animEnemyCobra
 // Menu variables
 
 let vx
 let posx
-let showRect = false
+let showLevelSelect = false
 
 let optmenu
-let showOptmenu = false
-let music = true
-let sfx = true
+let showOptMenu = false
+let playerMusic = true
+let playerSfx = true
 let slider
 let sliderActive
 let volume
@@ -266,10 +266,10 @@ class Platform {
           // rect(xoff - width / 2, yoff - height / 2, width, height)
           if (Math.abs(this.trapArray[i].getVel()) == this.trapArray[i].getVel()) {
             scale(-1, 1)
-            image(enemyCobra, -xoff - width / 2-15, yoff - height / 2-15)
+            image(animEnemyCobra, -xoff - width / 2-15, yoff - height / 2-15)
             scale(-1,1)
           } else {
-            image(enemyCobra, xoff - width / 2-15, yoff - height / 2-15)
+            image(animEnemyCobra, xoff - width / 2-15, yoff - height / 2-15)
           }
           // if (abs(this.trapArray[i].x) > this.width / 2 - width / 2) {
           //   this.trapArray[i].setVel(this.trapArray[i].getVel() * -1)
@@ -520,17 +520,17 @@ class Player extends Platform {
     
 
 
-    if (keyIsDown(controlSchemes[0]) || keyIsDown(controlSchemes[1])) {
+    if (keyIsDown(keyboardControls[0]) || keyIsDown(keyboardControls[1])) {
       if (!fade.in) {
         this.moveRight()
       }
     }
-    if (keyIsDown(controlSchemes[2]) || keyIsDown(controlSchemes[3])) {
+    if (keyIsDown(keyboardControls[2]) || keyIsDown(keyboardControls[3])) {
       if (!fade.in) {
         this.moveLeft()
       }
     }
-    if (keyIsDown(controlSchemes[4]) || keyIsDown(controlSchemes[5])) {
+    if (keyIsDown(keyboardControls[4]) || keyIsDown(keyboardControls[5])) {
       this.jump();
     }
     // This function "reloads" the level effectively making it restart.
@@ -592,7 +592,7 @@ class Player extends Platform {
     }
 
     this.grounded = false;
-    collisionHandeler(placedObjects)
+    collisionHandeler(objectList)
 
   }
 
@@ -628,11 +628,11 @@ class level{
   }
 
   load() {
-    placedObjects = []
+    objectList = []
     fetch('./levels/'+this.levelName+'.json')
     .then((response) => response.json())
     .then((json) => {
-      for (let i = 0; i < json.length; i++) {x
+      for (let i = 0; i < json.length; i++) {mousePosX
         if (json[i].spawner) {
           player = new Player(26, 11, json[i].startX, json[i].startY - (json[i].height/2 + 26/2));
         }
@@ -640,7 +640,7 @@ class level{
           goal = new Goal(35, 25, json[i].startX, json[i].startY - (json[i].height/2 + 35/2) + 5)
         }
         
-        placedObjects.push(new Platform(json[i].height, json[i].width, json[i].startX, json[i].startY, json[i].fx, json[i].fy, json[i].osilating, json[i].speed, json[i].spawner, json[i].goal, json[i].trapArray))
+        objectList.push(new Platform(json[i].height, json[i].width, json[i].startX, json[i].startY, json[i].fx, json[i].fy, json[i].osilating, json[i].speed, json[i].spawner, json[i].goal, json[i].trapArray))
       }
     });
 
@@ -649,33 +649,33 @@ class level{
 
     // Boss level for chapter 1. This will be an interesting experience.
     if (currentLevel == 8) {
-      snakeArray = []
+      bossCycleArray = []
   
   
       for (let row = 0; row < 5; row++) {
-        snakeArray.push([])
+        bossCycleArray.push([])
         for (let column = 0; column < 8; column++) {
-          snakeArray[row].push(0)
+          bossCycleArray[row].push(0)
         }
       }
   
-      console.log(snakeArray)
+      console.log(bossCycleArray)
 
 
       // snakeArray[4][6] = 100
      
       let cycle = [32, 33, 25, 26, 34, 35, 27, 28, 36, 37, 29, 30, 38, 39, 31, 23, 22, 14, 15, 7, 6, 5, 4, 12, 13, 21, 20, 19, 11, 3, 2, 10, 18, 17, 9, 1, 0, 8, 16, 24]
       let num = 0
-      loop = setInterval(() => {
+      bossSnakeLoop = setInterval(() => {
        
 
         for (let row = 0; row < 5; row++) {
           for (let column = 0; column < 8; column++) {
-            snakeArray[row][column]--
+            bossCycleArray[row][column]--
           }
         }
 
-        snakeArray[Math.floor(cycle[num]/8)][cycle[num]%8] = snakeLength
+        bossCycleArray[Math.floor(cycle[num]/8)][cycle[num]%8] = bossLength
         num++
 
 
@@ -684,17 +684,17 @@ class level{
           num = 0
         }
 
-        if (num == snakeLength) {
-          clearInterval(loop)
-          loop = setInterval(() => {
+        if (num == bossLength) {
+          clearInterval(bossSnakeLoop)
+          bossSnakeLoop = setInterval(() => {
             
           for (let row = 0; row < 5; row++) {
             for (let column = 0; column < 8; column++) {
-              snakeArray[row][column]--
+              bossCycleArray[row][column]--
             }
           }
 
-          snakeArray[Math.floor(cycle[num]/8)][cycle[num]%8] = snakeLength
+          bossCycleArray[Math.floor(cycle[num]/8)][cycle[num]%8] = bossLength
           num++
 
           if (num > 39) {
@@ -743,8 +743,8 @@ function preload() {
   jumpSounds = [loadSound("assets/jump-sound-1.mp3"), loadSound("assets/jump-sound-2.mp3"), loadSound("assets/jump-sound-3.mp3"), loadSound("assets/jump-sound-4.mp3")]
   button = [loadImage('assets/button-untoggled.png'), loadImage('assets/button-toggled.png')]
   font = loadFont('assets/little-pixel.ttf')
-  playingmusic = loadSound('assets/music.mp3')
-  enemyCobra = loadImage('images/enemy-cobra.gif')
+  isPlayingmusic = loadSound('assets/music.mp3')
+  animEnemyCobra = loadImage('images/enemy-cobra.gif')
   tiles = [loadImage('assets/tile-1.png'),loadImage('assets/tile-2.png'),loadImage('assets/tile-3.png'),loadImage('assets/tile-4.png'),loadImage('assets/tile-5.png'),loadImage('assets/tile-6.png'),]
   deathSound = loadSound('assets/death-sound.mp3')
 }
@@ -754,18 +754,18 @@ function preload() {
 function reload() {
   console.log("death")
   deathSound.play()
-  controlSchemes = [39, 68, 37, 65, 38, 87]
+  keyboardControls = [39, 68, 37, 65, 38, 87]
   if (currentLevel == 0) {
     time = 0
   }
   if (currentLevel != 8) {
-    snakeArray = null
+    bossCycleArray = null
   }
-  clearInterval(loop)
+  clearInterval(bossSnakeLoop)
   playerDeath.setFrame(0)
   playerDeath.play()
   // fade = 
-  console.log(currentLevel, levels.length, "from reload")
+  console.log(currentLevel, chapterOneLevels.length, "from reload")
   // if (currentLevel == levels.length) {
   //   if (localStorage.getItem("highScore") == null) {
   //     localStorage.setItem("highScore", time)
@@ -786,19 +786,19 @@ function reload() {
 
 
 function switchLevels() {
-  controlSchemes = [39, 68, 37, 65, 38, 87]
+  keyboardControls = [39, 68, 37, 65, 38, 87]
   if (currentLevel == 0) {
     time = 0
   }
   if (currentLevel != 8) {
-    snakeArray = null
+    bossCycleArray = null
   }
-  clearInterval(loop)
+  clearInterval(bossSnakeLoop)
   playerDeath.setFrame(0)
   playerDeath.play()
   // fade = 
-  console.log(currentLevel, levels.length, "from switchLevels")
-  if (currentLevel == levels.length) {
+  console.log(currentLevel, chapterOneLevels.length, "from switchLevels")
+  if (currentLevel == chapterOneLevels.length) {
     if (localStorage.getItem("highScore") == null) {
       localStorage.setItem("highScore", time)
     }
@@ -826,7 +826,7 @@ function setup() {
   fadeInFunction()
   // currentLevel = 7
 
-  if (!inMenu) new level(levels[3]).load()
+  if (!inMenu) new level(chapterOneLevels[3]).load()
 
 
   vx = 1 * 0.1
@@ -865,153 +865,16 @@ function draw() {
 
   deltaTime = deltaTime > 100 ? 0 : deltaTime
   outputVolume(volume)
-  if (inLevelSelect) {
-    unlockedLevels = localStorage.getItem("levels") != "" ? Number(localStorage.getItem("levels")) : 0
-    background(48, 255, 0)
-  
-    posx += vx
-  
-    if (posx >= width / 2 - 50 || posx <= 0) {
-      vx *= -1
-    }
-  
-    for (let i = 0; i < 4; i++) {
-      for (let color = 0; color < 3; color++) {
-        fill(0, 200 - 80 * color, 80)
-        noStroke();
-  
-        // The top
-        rect(posx + i * 400 - 243 * color - 340 - 1, 50 + 100 * color, 200 - 15 * (3 - color), 200)
-  
-        // The bottom
-        rect(posx + i * 400 - 243 * color - 340, 100 + 100 * color, 400, 200)
-      }
-    }
-    let mouseGrab = false
-    noSmooth()
-    for (let i = 0; i < 9; i++) {
-      // rect(75*(i%4) + 262.5, 75*Math.floor(i/4) + 100, 50, 50)
-      if (i > unlockedLevels) {
-        if (i == 8) {
-          continue
-        }
-        image(levelImages[8], 75*(i%4)+262.5 + Math.floor(i/8)*112.5, 75*Math.floor(i/4)+100, 50, 50)
-        continue
-      }
-      image(levelImages[i == 8 ? 9 : i], 75*(i%4)+262.5 + Math.floor(i/8)*112.5, 75*Math.floor(i/4)+100, 50, 50)
-      if (mouseX >= 75*(i%4) + 262.5 + Math.floor(i/8)*112.5 && mouseX <= 75*(i%4) + 50 + 262.5 + Math.floor(i/8)*112.5 && mouseY >= 75*Math.floor(i/4) + 100 && mouseY <= 75*Math.floor(i/4) + 50 + 100 && !showOptmenu) {
-        mouseGrab = true
-        if (mouseIsPressed) {
-          mouseGrab = false
-          currentLevel = i
-          inLevelSelect = false
-          // reload()
-          if (currentLevel == 0) {
-            time = 0
-          } else {
-            time = null
-          }
-          fadeInFunction()
-          new level(levels[i]).load()
-        }
-      }
-    }
-
-    if (mouseGrab) {
-      cursor(HAND)
-    } else {
-      cursor(ARROW)
-    }
-    regulateOptMenu()
-  }
+  levelSelectFunc();
+  menuFunc();
 
 
-  if (inMenu) {
-    background(48, 255, 0)
-  
-    posx += vx
-  
-    if (posx >= width / 2 - 50 || posx <= 0) {
-      vx *= -1
-    }
-  
-    for (let i = 0; i < 4; i++) {
-      for (let color = 0; color < 3; color++) {
-        fill(0, 200 - 80 * color, 80)
-        noStroke();
-  
-        // The top
-        rect(posx + i * 400 - 243 * color - 340 - 1, 50 + 100 * color, 200 - 15 * (3 - color), 200)
-  
-        // The bottom
-        rect(posx + i * 400 - 243 * color - 340, 100 + 100 * color, 400, 200)
-      }
-    }
-  
-    image(logo, logoX, logoY, 550, 550)
-  
-    if(showRect){
-      fill(215)
-      // rect(0+35,height/2+100,width-70,height/2)
-      let height = 40
-      for (let i = 0; i < 100; i++) {
-        
-        image(tiles[(i%6*Math.floor(i/6))%6], 70*(i%20)-10, 290+height*Math.floor(i/20), 70, height)
-      }
-      noSmooth()
-      
-    }
-    
-    regulateOptMenu()
-
-    buttons.forEach((btn, i) => {
-      if(i !== 5){  
-      btn.style('opacity', 1 - fadeOpacity / 255)
-      }
-    })
-  
-    machines.forEach(machine => {
-      machine.style('opacity', 1 - fadeOpacity / 255)
-    })
-      
-  
-  
-    
-    if(fading){
-  
-      fadeOpacity = lerp(fadeOpacity, fadeTarget, fadeSpeed*deltaTime)
-      
-      fill(0, fadeOpacity)
-      rect(0, 0, width, height)
-  
-      if(abs(fadeOpacity-fadeTarget)< 1){
-  
-        fadeOpacity = fadeTarget
-        fading = false
-  
-        if(fadeTarget == 255){
-          fadingDone = true
-          moveButton()
-          startFadeOut()
-        } else {
-          fadingDone = false
-        }
-  
-      }
-  
-    }
-  } 
-  else {
-    machines.forEach(machine => {
-      machine.hide()
-    }) 
-  }
 
   // player = new Player(1,1,1,1)
   // goal = new Goal(1,1,1,1)
 
 
-  if (currentLevel == levels.length) {
+  if (currentLevel == chapterOneLevels.length) {
     clear()
     background(48, 255, 0)
 
@@ -1043,7 +906,7 @@ function draw() {
     goal = null
     // currentLevel = 0
     inMenu = false
-    placedObjects = []
+    objectList = []
 
     stroke(0)
     textSize(40)
@@ -1081,18 +944,18 @@ function draw() {
 
   
   // If edit mode is on enable the draw and selection tool.
-  if (edit) {
+  if (isEditMode) {
 
     // If mode is equal to draw it will make a square at the mouses center.
-    if (dragged && mode == "draw") {
+    if (isDragging && toolMode == "draw") {
       fill(0)
-      rect(x, y, mouseX - x, mouseY - y)
+      rect(mousePosX, mousePosY, mouseX - mousePosX, mouseY - mousePosY)
     }
 
 
 
     // If the selected object is not null it will move according to the mouses new position subtracted by the last.
-    else if (dragged && selectedObject != null) {
+    else if (isDragging && selectedObject != null) {
       let position = selectedObject.getLocation()
       let x = position[0]
       let y = position[1]
@@ -1110,11 +973,11 @@ function draw() {
   // Draws the player as well as all of the objects in the objectList array.
   time = time == null ? null : time + deltaTime
   goal.draw()
-  for (let i = 0; i < placedObjects.length; i++) {
-    placedObjects[i].draw()
+  for (let i = 0; i < objectList.length; i++) {
+    objectList[i].draw()
   }
-  for (let i = 0; i < placedObjects.length; i++) {
-    placedObjects[i].drawEnemies()
+  for (let i = 0; i < objectList.length; i++) {
+    objectList[i].drawEnemies()
   }
   player.draw()
   fill(255)
@@ -1126,7 +989,7 @@ function draw() {
     text((time / 1000).toFixed(2), 150,50)
   }
 
-  text(levels[currentLevel], 70, 50)
+  text(chapterOneLevels[currentLevel], 70, 50)
   
   
 
@@ -1135,280 +998,7 @@ function draw() {
   let sizerMod = sizer / 0
   noStroke()
   // console.log(mouseX)
-  if (snakeArray != null) {
-    for (let row = 0; row < 5; row++) {
-      for (let column = 0; column < 8; column++) {
-        if (snakeArray[row][column] > 0) {
-          fill(255)
-          // if (row != 4 && Math.abs(snakeArray[row+1][column] - snakeArray[row][column]) == 1) {
-          //   rect(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)), row * (sizer+sizer/sizerMod)+80 + sizer / 2, sizer)
-          // }
-          // if (column != 7 && Math.abs(snakeArray[row][column+1] - snakeArray[row][column]) == 1) {
-          //   rect(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer / 2, row * (sizer+sizer/sizerMod)+80, sizer)
-          // }
-          
-  
-  
-  
-          // if (snakeArray[row][column] == snakeLength) {
-          //   fill(0, 255, 0)
-          // } else {
-          //   fill(255)
-          // }
-          
-          let snakebit = new Platform(sizer-10, sizer-10, column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer / 2, row * (sizer+sizer/sizerMod)+80 + sizer / 2)
-          // rect(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)), row * (sizer+sizer/sizerMod)+80, sizer)
-
-
-          // Straights
-          // console.log((column != 0 || column != 7) && Math.abs(snakeArray[row][column+1] - snakeArray[row][column]) == 1 && Math.abs(snakeArray[row][column-1] - snakeArray[row][column]) == 1)
-          if ((column != 0 && column != 7 && snakeArray[row][column-1] != 0) && snakeArray[row][column-1] - snakeArray[row][column] == -1 && snakeArray[row][column+1] - snakeArray[row][column] == 1) {            
-            image(snakeStraight, column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)), row * (sizer+sizer/sizerMod)+80, sizer, sizer)
-          }
-
-
-          if ((column != 0 && column != 7 && snakeArray[row][column+1] != 0) && snakeArray[row][column-1] - snakeArray[row][column] == 1 && snakeArray[row][column+1] - snakeArray[row][column] == -1) { 
-            scale(-1, 1)
-            image(snakeStraight, -(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)))-sizer, row * (sizer+sizer/sizerMod)+80, sizer, sizer)
-            scale(-1, 1)
-          }
-
-
-          // Corner
-
-          // console.log(snakeArray[row+1][column] - snakeArray[row][column],  snakeArray[row-1][column] - snakeArray[row][column])
-          if ((row != 0 && row != 4 && snakeArray[row-1][column] != 0) && snakeArray[row+1][column] - snakeArray[row][column] == 1 && snakeArray[row-1][column] - snakeArray[row][column] == -1) {
-            translate(1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), 1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-            rotate(90)
-            imageMode(CENTER)
-            image(snakeStraight, 0, 0, sizer, sizer)
-            imageMode(CORNER)
-            rotate(-90)
-            translate(-1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), -1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-
-          }
-          
-          if ((row != 0 && row != 4 && snakeArray[row+1][column] != 0) && snakeArray[row+1][column] - snakeArray[row][column] == -1 && snakeArray[row-1][column] - snakeArray[row][column] == 1) {
-            translate(1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), 1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-            rotate(-90)
-            imageMode(CENTER)
-            image(snakeStraight, 0, 0, sizer, sizer)
-            imageMode(CORNER)
-            rotate(90)
-            translate(-1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), -1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-
-          }
-          
-          if ((column != 0 && row != 0 && snakeArray[row][column-1]) && snakeArray[row][column-1] - snakeArray[row][column] == -1 && snakeArray[row-1][column] - snakeArray[row][column] == 1) {
-            image(snakeCorner, column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)), row * (sizer+sizer/sizerMod)+80, sizer, sizer)
-          }
-
-
-          if ((column != 0 && row != 4 && snakeArray[row+1][column] != 0) && snakeArray[row][column-1] - snakeArray[row][column] == 1 && snakeArray[row+1][column] - snakeArray[row][column] == -1) {
-            translate(1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), 1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-            rotate(-90)
-            imageMode(CENTER)
-            image(snakeCorner, 0, 0, sizer, sizer)
-            imageMode(CORNER)
-            rotate(90)
-            translate(-1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), -1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-          }
-
-
-          if ((column != 7 && row != 4 && snakeArray[row][column+1] != 0) && snakeArray[row][column+1] - snakeArray[row][column] == -1 && snakeArray[row+1][column] - snakeArray[row][column] == 1) {
-            translate(1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), 1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-            rotate(-180)
-            imageMode(CENTER)
-            image(snakeCorner, 0, 0, sizer, sizer)
-            imageMode(CORNER)
-            rotate(180)
-            translate(-1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), -1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-          }
-
-
-          if ((column != 7 && row != 0 && snakeArray[row-1][column] != 0) && snakeArray[row][column+1] - snakeArray[row][column] == 1 && snakeArray[row-1][column] - snakeArray[row][column] == -1) {
-            translate(1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), 1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-            rotate(90)
-            imageMode(CENTER)
-            image(snakeCorner, 0, 0, sizer, sizer)
-            imageMode(CORNER)
-            rotate(-90)
-            translate(-1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), -1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-          }
-
-
-
-
-
-          // Corner flipped
-          if ((column != 0 && row != 4 && snakeArray[row][column-1] != 0) && snakeArray[row][column-1] - snakeArray[row][column] == -1 && snakeArray[row+1][column] - snakeArray[row][column] == 1) {
-            translate(1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), 1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-            rotate(-180)
-            imageMode(CENTER)
-            image(snakeCornerFlipepd, 0, 0, sizer, sizer)
-            imageMode(CORNER)
-            rotate(180)
-            translate(-1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), -1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-          }
-
-
-          if ((column != 7 && row != 4 && snakeArray[row+1][column] != 0) && snakeArray[row][column+1] - snakeArray[row][column] == 1 && snakeArray[row+1][column] - snakeArray[row][column] == -1) {
-            translate(1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), 1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-            rotate(-270)
-            imageMode(CENTER)
-            image(snakeCornerFlipepd, 0, 0, sizer, sizer)
-            imageMode(CORNER)
-            rotate(270)
-            translate(-1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), -1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-          }
-
-
-          if ((column != 7 && row != 0 && snakeArray[row][column+1] != 0) && snakeArray[row][column+1] - snakeArray[row][column] == -1 && snakeArray[row-1][column] - snakeArray[row][column] == 1) {
-            translate(1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), 1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-            rotate(0)
-            imageMode(CENTER)
-            image(snakeCornerFlipepd, 0, 0, sizer, sizer)
-            imageMode(CORNER)
-            rotate(-0)
-            translate(-1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), -1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-          }
-
-          
-          if ((column != 0 && row != 0 && snakeArray[row-1][column] != 0) && snakeArray[row][column-1] - snakeArray[row][column] == 1 && snakeArray[row-1][column] - snakeArray[row][column] == -1) {
-            translate(1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), 1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-            rotate(-90)
-            imageMode(CENTER)
-            image(snakeCornerFlipepd, 0, 0, sizer, sizer)
-            imageMode(CORNER)
-            rotate(90)
-            translate(-1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), -1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-          }
-
-
-
-          // Head
-          if ((column != 0) && snakeArray[row][column] == snakeLength && snakeArray[row][column-1] - snakeArray[row][column] == -1) {
-            translate(1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), 1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-            rotate(0)
-            imageMode(CENTER)
-            image(snakeHead, 0, 0, sizer, sizer)
-            imageMode(CORNER)
-            rotate(0)
-            translate(-1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), -1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-          }
-
-          if ((column != 7) && snakeArray[row][column] == snakeLength && snakeArray[row][column+1] - snakeArray[row][column] == -1) {
-            translate(1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), 1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-            rotate(180)
-            imageMode(CENTER)
-            image(snakeHead, 0, 0, sizer, sizer)
-            imageMode(CORNER)
-            rotate(180)
-            translate(-1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), -1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-          }
-
-          if ((row != 0) && snakeArray[row][column] == snakeLength && snakeArray[row-1][column] - snakeArray[row][column] == -1) {
-            translate(1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), 1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-            rotate(90)
-            imageMode(CENTER)
-            image(snakeHead, 0, 0, sizer, sizer)
-            imageMode(CORNER)
-            rotate(-90)
-            translate(-1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), -1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-          }
-
-          if ((row != 4) && snakeArray[row][column] == snakeLength && snakeArray[row+1][column] - snakeArray[row][column] == -1) {
-            translate(1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), 1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-            rotate(-90)
-            imageMode(CENTER)
-            image(snakeHead, 0, 0, sizer, sizer)
-            imageMode(CORNER)
-            rotate(90)
-            translate(-1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), -1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-          }
-
-
-
-          // Tail
-          if ((column != 0) && snakeArray[row][column] == 1 && snakeArray[row][column-1] - snakeArray[row][column] == 1) {
-            translate(1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), 1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-            rotate(0)
-            imageMode(CENTER)
-            image(snakeTail, 0, 0, sizer, sizer)
-            imageMode(CORNER)
-            rotate(0)
-            translate(-1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), -1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-          }
-
-          if ((column != 7) && snakeArray[row][column] == 1 && snakeArray[row][column+1] - snakeArray[row][column] == 1) {
-            translate(1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), 1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-            rotate(180)
-            imageMode(CENTER)
-            image(snakeTail, 0, 0, sizer, sizer)
-            imageMode(CORNER)
-            rotate(180)
-            translate(-1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), -1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-          }
-
-          if ((row != 0) && snakeArray[row][column] == 1 && snakeArray[row-1][column] - snakeArray[row][column] == 1) {
-            translate(1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), 1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-            rotate(90)
-            imageMode(CENTER)
-            image(snakeTail, 0, 0, sizer, sizer)
-            imageMode(CORNER)
-            rotate(-90)
-            translate(-1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), -1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-          }
-
-          if ((row != 4) && snakeArray[row][column] == 1 && snakeArray[row+1][column] - snakeArray[row][column] == 1) {
-            translate(1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), 1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-            rotate(-90)
-            imageMode(CENTER)
-            image(snakeTail, 0, 0, sizer, sizer)
-            imageMode(CORNER)
-            rotate(90)
-            translate(-1*(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer/2), -1*(row * (sizer+sizer/sizerMod)+80 + sizer/2))
-          }
-
-
-
-          if (doObjectCollide(player, snakebit) && !fade.in) {
-            // console.log("player collided with", row, column) 
-            let position = snakebit.getLocation()
-            let x = position[0]
-            let y = position[1]
-            
-            if (snakeArray[row][column] == snakeLength) {
-              reload()
-            }
-            
-            let velocities = snakebit.getVelocities()
-            let vx = velocities[0]
-            let vy = velocities[1]
-            if (player.y + player.height / 2 - (player.vy*deltaTime+2) <= y - snakebit.height / 2 - vy*deltaTime) {
-              // console.log("activated")
-              player.grounded = snakebit;
-              player.vy = 0
-              player.y = y - snakebit.height/2 - player.height/2
-            } else {
-              // Right side of snakebit collision
-              console.log(player.x - player.width / 2 - (player.vx*deltaTime), x + snakebit.width / 2 - vx*deltaTime)
-              if (player.x - player.width / 2 - (player.vx*deltaTime) >= x + snakebit.width / 2 - vx*deltaTime) {
-                player.x = x + snakebit.width/2 + player.width/2 + 2
-              }
-              // Left side of snakebit collision
-              if (player.x + player.width / 2 - (player.vx*deltaTime) <= x - snakebit.width / 2 - vx*deltaTime) {
-                player.x = x - snakebit.width/2 - player.width/2 - 2
-              }
-            }
-          }
-          // if (column == 7) {
-          //   console.log(400-((7 * (sizer + sizer/10) + sizer) / 2))
-          // }
-        }
-      }
-    }
-  }
+  drawBoss();
   regulateOptMenu()
   if (fade.in) {
     let fadeAmount = -0.5
@@ -1416,7 +1006,7 @@ function draw() {
     fill(0,0,0, 255 - fade.level)
     rect(0,0,1000, 1000)
     if (fade.level <= 0) {
-      new level(levels[currentLevel]).load()
+      new level(chapterOneLevels[currentLevel]).load()
       fadeInFunction()
     }
   } else {
@@ -1424,6 +1014,425 @@ function draw() {
     fade.level += fadeAmount*deltaTime
     fill(0,0,0, 255 - fade.level)
     rect(0,0,1000, 1000)  
+  }
+
+  function drawBoss() {
+    if (bossCycleArray != null) {
+      for (let row = 0; row < 5; row++) {
+        for (let column = 0; column < 8; column++) {
+          if (bossCycleArray[row][column] > 0) {
+            fill(255);
+            // if (row != 4 && Math.abs(snakeArray[row+1][column] - snakeArray[row][column]) == 1) {
+            //   rect(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)), row * (sizer+sizer/sizerMod)+80 + sizer / 2, sizer)
+            // }
+            // if (column != 7 && Math.abs(snakeArray[row][column+1] - snakeArray[row][column]) == 1) {
+            //   rect(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)) + sizer / 2, row * (sizer+sizer/sizerMod)+80, sizer)
+            // }
+            // if (snakeArray[row][column] == snakeLength) {
+            //   fill(0, 255, 0)
+            // } else {
+            //   fill(255)
+            // }
+            let snakebit = new Platform(sizer - 10, sizer - 10, column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2, row * (sizer + sizer / sizerMod) + 80 + sizer / 2);
+            // rect(column * (sizer + sizer/sizerMod) + (400-((7 * (sizer + sizer/sizerMod) + sizer) / 2)), row * (sizer+sizer/sizerMod)+80, sizer)
+            // Straights
+            // console.log((column != 0 || column != 7) && Math.abs(snakeArray[row][column+1] - snakeArray[row][column]) == 1 && Math.abs(snakeArray[row][column-1] - snakeArray[row][column]) == 1)
+            if ((column != 0 && column != 7 && bossCycleArray[row][column - 1] != 0) && bossCycleArray[row][column - 1] - bossCycleArray[row][column] == -1 && bossCycleArray[row][column + 1] - bossCycleArray[row][column] == 1) {
+              image(snakeStraight, column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)), row * (sizer + sizer / sizerMod) + 80, sizer, sizer);
+            }
+
+
+            if ((column != 0 && column != 7 && bossCycleArray[row][column + 1] != 0) && bossCycleArray[row][column - 1] - bossCycleArray[row][column] == 1 && bossCycleArray[row][column + 1] - bossCycleArray[row][column] == -1) {
+              scale(-1, 1);
+              image(snakeStraight, -(column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2))) - sizer, row * (sizer + sizer / sizerMod) + 80, sizer, sizer);
+              scale(-1, 1);
+            }
+
+
+            // Corner
+            // console.log(snakeArray[row+1][column] - snakeArray[row][column],  snakeArray[row-1][column] - snakeArray[row][column])
+            if ((row != 0 && row != 4 && bossCycleArray[row - 1][column] != 0) && bossCycleArray[row + 1][column] - bossCycleArray[row][column] == 1 && bossCycleArray[row - 1][column] - bossCycleArray[row][column] == -1) {
+              translate(1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), 1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+              rotate(90);
+              imageMode(CENTER);
+              image(snakeStraight, 0, 0, sizer, sizer);
+              imageMode(CORNER);
+              rotate(-90);
+              translate(-1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), -1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+
+            }
+
+            if ((row != 0 && row != 4 && bossCycleArray[row + 1][column] != 0) && bossCycleArray[row + 1][column] - bossCycleArray[row][column] == -1 && bossCycleArray[row - 1][column] - bossCycleArray[row][column] == 1) {
+              translate(1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), 1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+              rotate(-90);
+              imageMode(CENTER);
+              image(snakeStraight, 0, 0, sizer, sizer);
+              imageMode(CORNER);
+              rotate(90);
+              translate(-1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), -1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+
+            }
+
+            if ((column != 0 && row != 0 && bossCycleArray[row][column - 1]) && bossCycleArray[row][column - 1] - bossCycleArray[row][column] == -1 && bossCycleArray[row - 1][column] - bossCycleArray[row][column] == 1) {
+              image(snakeCorner, column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)), row * (sizer + sizer / sizerMod) + 80, sizer, sizer);
+            }
+
+
+            if ((column != 0 && row != 4 && bossCycleArray[row + 1][column] != 0) && bossCycleArray[row][column - 1] - bossCycleArray[row][column] == 1 && bossCycleArray[row + 1][column] - bossCycleArray[row][column] == -1) {
+              translate(1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), 1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+              rotate(-90);
+              imageMode(CENTER);
+              image(snakeCorner, 0, 0, sizer, sizer);
+              imageMode(CORNER);
+              rotate(90);
+              translate(-1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), -1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+            }
+
+
+            if ((column != 7 && row != 4 && bossCycleArray[row][column + 1] != 0) && bossCycleArray[row][column + 1] - bossCycleArray[row][column] == -1 && bossCycleArray[row + 1][column] - bossCycleArray[row][column] == 1) {
+              translate(1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), 1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+              rotate(-180);
+              imageMode(CENTER);
+              image(snakeCorner, 0, 0, sizer, sizer);
+              imageMode(CORNER);
+              rotate(180);
+              translate(-1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), -1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+            }
+
+
+            if ((column != 7 && row != 0 && bossCycleArray[row - 1][column] != 0) && bossCycleArray[row][column + 1] - bossCycleArray[row][column] == 1 && bossCycleArray[row - 1][column] - bossCycleArray[row][column] == -1) {
+              translate(1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), 1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+              rotate(90);
+              imageMode(CENTER);
+              image(snakeCorner, 0, 0, sizer, sizer);
+              imageMode(CORNER);
+              rotate(-90);
+              translate(-1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), -1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+            }
+
+
+
+
+
+            // Corner flipped
+            if ((column != 0 && row != 4 && bossCycleArray[row][column - 1] != 0) && bossCycleArray[row][column - 1] - bossCycleArray[row][column] == -1 && bossCycleArray[row + 1][column] - bossCycleArray[row][column] == 1) {
+              translate(1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), 1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+              rotate(-180);
+              imageMode(CENTER);
+              image(snakeCornerFlipepd, 0, 0, sizer, sizer);
+              imageMode(CORNER);
+              rotate(180);
+              translate(-1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), -1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+            }
+
+
+            if ((column != 7 && row != 4 && bossCycleArray[row + 1][column] != 0) && bossCycleArray[row][column + 1] - bossCycleArray[row][column] == 1 && bossCycleArray[row + 1][column] - bossCycleArray[row][column] == -1) {
+              translate(1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), 1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+              rotate(-270);
+              imageMode(CENTER);
+              image(snakeCornerFlipepd, 0, 0, sizer, sizer);
+              imageMode(CORNER);
+              rotate(270);
+              translate(-1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), -1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+            }
+
+
+            if ((column != 7 && row != 0 && bossCycleArray[row][column + 1] != 0) && bossCycleArray[row][column + 1] - bossCycleArray[row][column] == -1 && bossCycleArray[row - 1][column] - bossCycleArray[row][column] == 1) {
+              translate(1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), 1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+              rotate(0);
+              imageMode(CENTER);
+              image(snakeCornerFlipepd, 0, 0, sizer, sizer);
+              imageMode(CORNER);
+              rotate(-0);
+              translate(-1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), -1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+            }
+
+
+            if ((column != 0 && row != 0 && bossCycleArray[row - 1][column] != 0) && bossCycleArray[row][column - 1] - bossCycleArray[row][column] == 1 && bossCycleArray[row - 1][column] - bossCycleArray[row][column] == -1) {
+              translate(1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), 1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+              rotate(-90);
+              imageMode(CENTER);
+              image(snakeCornerFlipepd, 0, 0, sizer, sizer);
+              imageMode(CORNER);
+              rotate(90);
+              translate(-1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), -1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+            }
+
+
+
+            // Head
+            if ((column != 0) && bossCycleArray[row][column] == bossLength && bossCycleArray[row][column - 1] - bossCycleArray[row][column] == -1) {
+              translate(1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), 1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+              rotate(0);
+              imageMode(CENTER);
+              image(snakeHead, 0, 0, sizer, sizer);
+              imageMode(CORNER);
+              rotate(0);
+              translate(-1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), -1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+            }
+
+            if ((column != 7) && bossCycleArray[row][column] == bossLength && bossCycleArray[row][column + 1] - bossCycleArray[row][column] == -1) {
+              translate(1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), 1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+              rotate(180);
+              imageMode(CENTER);
+              image(snakeHead, 0, 0, sizer, sizer);
+              imageMode(CORNER);
+              rotate(180);
+              translate(-1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), -1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+            }
+
+            if ((row != 0) && bossCycleArray[row][column] == bossLength && bossCycleArray[row - 1][column] - bossCycleArray[row][column] == -1) {
+              translate(1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), 1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+              rotate(90);
+              imageMode(CENTER);
+              image(snakeHead, 0, 0, sizer, sizer);
+              imageMode(CORNER);
+              rotate(-90);
+              translate(-1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), -1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+            }
+
+            if ((row != 4) && bossCycleArray[row][column] == bossLength && bossCycleArray[row + 1][column] - bossCycleArray[row][column] == -1) {
+              translate(1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), 1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+              rotate(-90);
+              imageMode(CENTER);
+              image(snakeHead, 0, 0, sizer, sizer);
+              imageMode(CORNER);
+              rotate(90);
+              translate(-1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), -1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+            }
+
+
+
+            // Tail
+            if ((column != 0) && bossCycleArray[row][column] == 1 && bossCycleArray[row][column - 1] - bossCycleArray[row][column] == 1) {
+              translate(1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), 1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+              rotate(0);
+              imageMode(CENTER);
+              image(snakeTail, 0, 0, sizer, sizer);
+              imageMode(CORNER);
+              rotate(0);
+              translate(-1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), -1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+            }
+
+            if ((column != 7) && bossCycleArray[row][column] == 1 && bossCycleArray[row][column + 1] - bossCycleArray[row][column] == 1) {
+              translate(1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), 1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+              rotate(180);
+              imageMode(CENTER);
+              image(snakeTail, 0, 0, sizer, sizer);
+              imageMode(CORNER);
+              rotate(180);
+              translate(-1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), -1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+            }
+
+            if ((row != 0) && bossCycleArray[row][column] == 1 && bossCycleArray[row - 1][column] - bossCycleArray[row][column] == 1) {
+              translate(1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), 1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+              rotate(90);
+              imageMode(CENTER);
+              image(snakeTail, 0, 0, sizer, sizer);
+              imageMode(CORNER);
+              rotate(-90);
+              translate(-1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), -1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+            }
+
+            if ((row != 4) && bossCycleArray[row][column] == 1 && bossCycleArray[row + 1][column] - bossCycleArray[row][column] == 1) {
+              translate(1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), 1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+              rotate(-90);
+              imageMode(CENTER);
+              image(snakeTail, 0, 0, sizer, sizer);
+              imageMode(CORNER);
+              rotate(90);
+              translate(-1 * (column * (sizer + sizer / sizerMod) + (400 - ((7 * (sizer + sizer / sizerMod) + sizer) / 2)) + sizer / 2), -1 * (row * (sizer + sizer / sizerMod) + 80 + sizer / 2));
+            }
+
+
+
+            if (doObjectCollide(player, snakebit) && !fade.in) {
+              // console.log("player collided with", row, column) 
+              let position = snakebit.getLocation();
+              let x = position[0];
+              let y = position[1];
+
+              if (bossCycleArray[row][column] == bossLength) {
+                reload();
+              }
+
+              let velocities = snakebit.getVelocities();
+              let vx = velocities[0];
+              let vy = velocities[1];
+              if (player.y + player.height / 2 - (player.vy * deltaTime + 2) <= y - snakebit.height / 2 - vy * deltaTime) {
+                // console.log("activated")
+                player.grounded = snakebit;
+                player.vy = 0;
+                player.y = y - snakebit.height / 2 - player.height / 2;
+              } else {
+                // Right side of snakebit collision
+                console.log(player.x - player.width / 2 - (player.vx * deltaTime), x + snakebit.width / 2 - vx * deltaTime);
+                if (player.x - player.width / 2 - (player.vx * deltaTime) >= x + snakebit.width / 2 - vx * deltaTime) {
+                  player.x = x + snakebit.width / 2 + player.width / 2 + 2;
+                }
+                // Left side of snakebit collision
+                if (player.x + player.width / 2 - (player.vx * deltaTime) <= x - snakebit.width / 2 - vx * deltaTime) {
+                  player.x = x - snakebit.width / 2 - player.width / 2 - 2;
+                }
+              }
+            }
+            // if (column == 7) {
+            //   console.log(400-((7 * (sizer + sizer/10) + sizer) / 2))
+            // }
+          }
+        }
+      }
+    }
+  }
+
+  function menuFunc() {
+    if (inMenu) {
+      background(48, 255, 0);
+
+      posx += vx;
+
+      if (posx >= width / 2 - 50 || posx <= 0) {
+        vx *= -1;
+      }
+
+      for (let i = 0; i < 4; i++) {
+        for (let color = 0; color < 3; color++) {
+          fill(0, 200 - 80 * color, 80);
+          noStroke();
+
+          // The top
+          rect(posx + i * 400 - 243 * color - 340 - 1, 50 + 100 * color, 200 - 15 * (3 - color), 200);
+
+          // The bottom
+          rect(posx + i * 400 - 243 * color - 340, 100 + 100 * color, 400, 200);
+        }
+      }
+
+      image(logo, logoX, logoY, 550, 550);
+
+      if (showLevelSelect) {
+        fill(215);
+        // rect(0+35,height/2+100,width-70,height/2)
+        let height = 40;
+        for (let i = 0; i < 100; i++) {
+
+          image(tiles[(i % 6 * Math.floor(i / 6)) % 6], 70 * (i % 20) - 10, 290 + height * Math.floor(i / 20), 70, height);
+        }
+        noSmooth();
+
+      } else {
+        textFont(font)
+        textSize(32)
+        text("V:0.5", 10, 32+14)  
+  
+      }
+
+      regulateOptMenu();
+
+      buttons.forEach((btn, i) => {
+        if (i !== 5) {
+          btn.style('opacity', 1 - fadeOpacity / 255);
+        }
+      });
+
+      machines.forEach(machine => {
+        machine.style('opacity', 1 - fadeOpacity / 255);
+      });
+
+
+
+
+      if (fading) {
+
+        fadeOpacity = lerp(fadeOpacity, fadeTarget, fadeSpeed * deltaTime);
+
+        fill(0, fadeOpacity);
+        rect(0, 0, width, height);
+
+        if (abs(fadeOpacity - fadeTarget) < 1) {
+
+          fadeOpacity = fadeTarget;
+          fading = false;
+
+          if (fadeTarget == 255) {
+            fadingDone = true;
+            moveButton();
+            startFadeOut();
+          } else {
+            fadingDone = false;
+          }
+
+        }
+
+      }
+    }
+    else {
+      machines.forEach(machine => {
+        machine.hide();
+      });
+    }
+  }
+
+  function levelSelectFunc() {
+    if (isLevelSelect) {
+      unlockedLevels = localStorage.getItem("levels") != "" ? Number(localStorage.getItem("levels")) : 0;
+      background(48, 255, 0);
+
+      posx += vx;
+
+      if (posx >= width / 2 - 50 || posx <= 0) {
+        vx *= -1;
+      }
+
+      for (let i = 0; i < 4; i++) {
+        for (let color = 0; color < 3; color++) {
+          fill(0, 200 - 80 * color, 80);
+          noStroke();
+
+          // The top
+          rect(posx + i * 400 - 243 * color - 340 - 1, 50 + 100 * color, 200 - 15 * (3 - color), 200);
+
+          // The bottom
+          rect(posx + i * 400 - 243 * color - 340, 100 + 100 * color, 400, 200);
+        }
+      }
+      let mouseGrab = false;
+      noSmooth();
+      for (let i = 0; i < 9; i++) {
+        // rect(75*(i%4) + 262.5, 75*Math.floor(i/4) + 100, 50, 50)
+        if (i > unlockedLevels) {
+          if (i == 8) {
+            continue;
+          }
+          image(levelImages[8], 75 * (i % 4) + 262.5 + Math.floor(i / 8) * 112.5, 75 * Math.floor(i / 4) + 100, 50, 50);
+          continue;
+        }
+        image(levelImages[i == 8 ? 9 : i], 75 * (i % 4) + 262.5 + Math.floor(i / 8) * 112.5, 75 * Math.floor(i / 4) + 100, 50, 50);
+        if (mouseX >= 75 * (i % 4) + 262.5 + Math.floor(i / 8) * 112.5 && mouseX <= 75 * (i % 4) + 50 + 262.5 + Math.floor(i / 8) * 112.5 && mouseY >= 75 * Math.floor(i / 4) + 100 && mouseY <= 75 * Math.floor(i / 4) + 50 + 100 && !showOptMenu) {
+          mouseGrab = true;
+          if (mouseIsPressed) {
+            mouseGrab = false;
+            currentLevel = i;
+            isLevelSelect = false;
+            // reload()
+            if (currentLevel == 0) {
+              time = 0;
+            } else {
+              time = null;
+            }
+            fadeInFunction();
+            new level(chapterOneLevels[i]).load();
+          }
+        }
+      }
+
+      if (mouseGrab) {
+        cursor(HAND);
+      } else {
+        cursor(ARROW);
+      }
+      regulateOptMenu();
+    }
   }
 }
 
@@ -1518,38 +1527,38 @@ function mousePressed(event) {
   
     }
   }
-  dragged = true
+  isDragging = true
   selectedObject = null
-  x = mouseX
-  y = mouseY
+  mousePosX = mouseX
+  mousePosY = mouseY
 
-  console.log(x,y)
-  for (let i = 0; i < placedObjects.length; i++) {
-    let bb = placedObjects[i].getBoundingBox()
+  console.log(mousePosX,mousePosY)
+  for (let i = 0; i < objectList.length; i++) {
+    let bb = objectList[i].getBoundingBox()
     let ix = bb[0]
     let iy = bb[1]
     let ax = bb[2]
     let ay = bb[3]
-    if(ix <= x && x <= ax && iy <= y && y <= ay ) {
+    if(ix <= mousePosX && mousePosX <= ax && iy <= mousePosY && mousePosY <= ay ) {
       console.log("bb " + i)
-      selectedObject = placedObjects[i]
+      selectedObject = objectList[i]
       if (keyIsDown(8)) {
         if (i == 0) {
-          placedObjects.shift()
-        } else if (i == placedObjects.length-1) {
-          placedObjects.pop()
+          objectList.shift()
+        } else if (i == objectList.length-1) {
+          objectList.pop()
         } else { 
-          const list1 = placedObjects.slice(0, i)
-          const list2 = placedObjects.slice(i+1);
+          const list1 = objectList.slice(0, i)
+          const list2 = objectList.slice(i+1);
   
-          console.log(placedObjects, list2, list2)
-          placedObjects = list1.concat(list2);
+          console.log(objectList, list2, list2)
+          objectList = list1.concat(list2);
         }
 
       }
       if (keyIsDown(84)) {
 
-        placedObjects[i].trapArray.push(new Trap(0, -25, UP_ARROW))
+        objectList[i].trapArray.push(new Trap(0, -25, UP_ARROW))
         // console.log(placedObjects)
       }
     }
@@ -1560,25 +1569,25 @@ function mousePressed(event) {
 function mouseReleased(event){
   sliderActive = false
 
-  if (mode == "draw" && mouseY-y > 10 && mouseX-x > 10) {
-    placedObjects.push(new Platform(mouseY-y, mouseX-x, x + (mouseX - x)/2, y + (mouseY-y)/2))
+  if (toolMode == "draw" && mouseY-mousePosY > 10 && mouseX-mousePosX > 10) {
+    objectList.push(new Platform(mouseY-mousePosY, mouseX-mousePosX, mousePosX + (mouseX - mousePosX)/2, mousePosY + (mouseY-mousePosY)/2))
   }
-  dragged = false
+  isDragging = false
 }
 
 // I am now officialy going insane explaining my functions. This seems somewhat self explanatory right?
 function selectTool() {
-  mode = "select"
+  toolMode = "select"
 }
 
 // I mean this is the first time i do this and i really think i should practice commenting. Its just SO INCREDIBLY BORING.
 function drawTool() {
-  mode = "draw"
+  toolMode = "draw"
 }
 
 // Takes all of the objects currently in the placedObjects list and sends it back to the player in a json format so that they can paste it into a level json file.
 function exportObjects() {
-  console.log(JSON.stringify(placedObjects))
+  console.log(JSON.stringify(objectList))
 }
 
 function fadeInFunction() {
@@ -1634,9 +1643,9 @@ function handleButtonClick(i) {
   
   } else if (i== 2){
     console.log('Options')
-    showOptmenu = !showOptmenu
+    showOptMenu = !showOptMenu
 
-    if(showOptmenu){
+    if(showOptMenu){
       
       buttons[3].show().position(width/2+62-42.5,height/2-75)
       buttons[4].show().position(width/2+62-42.5,height/2-8)
@@ -1654,7 +1663,7 @@ function handleButtonClick(i) {
   } else if (i == 5) {
 
     setTimeout(() => {
-      showOptmenu = !showOptmenu
+      showOptMenu = !showOptMenu
       buttons[3].hide()
       buttons[4].hide()
       buttons[5].hide()
@@ -1665,8 +1674,8 @@ function handleButtonClick(i) {
 
     //tilbage til main menu
     inMenu = true
-    inLevelSelect = false
-    showOptmenu = false
+    isLevelSelect = false
+    showOptMenu = false
     toHome()
     
 
@@ -1701,7 +1710,7 @@ function moveButton(btn){
   logoX = -4000
   logoY = -4000
 
-  showRect = !showRect
+  showLevelSelect = !showLevelSelect
   buttons[2].position(width-buttons[2].width-10, 10)
   buttons[7].show().position(10,10)
 
@@ -1732,7 +1741,7 @@ function moveButton(btn){
 
 
 
-      inLevelSelect = true
+      isLevelSelect = true
       inMenu = false
 
       fadeInFunction()
@@ -1765,31 +1774,31 @@ function handleMouseOutMachine(machineBtn, unlockedImg) {
 function toHome(btn, machineBtn){
 
 
-  if (inLevelSelect) {
-    inLevelSelect = false
+  if (isLevelSelect) {
+    isLevelSelect = false
     inMenu = true
     for (let i = 0; i < machines.length; i++) {
       machines[i].show()
     }
 
-  } else if (!inLevelSelect && !inMenu) {
-    inLevelSelect = true
+  } else if (!isLevelSelect && !inMenu) {
+    isLevelSelect = true
     // inMenu = true
-    clearInterval(loop)
+    clearInterval(bossSnakeLoop)
     time = 0
-    snakeArray = null
+    bossCycleArray = null
     // showRect = !showRect
     currentLevel = 0
     player = null
     goal = null
-    placedObjects = []
+    objectList = []
 
 
   } else {
-    clearInterval(loop)
+    clearInterval(bossSnakeLoop)
     time = 0
-    snakeArray = null
-    showRect = !showRect
+    bossCycleArray = null
+    showLevelSelect = !showLevelSelect
     currentLevel = 0
   
     logoX = 125
@@ -1806,11 +1815,11 @@ function toHome(btn, machineBtn){
       machines[i].hide()
     }
   
-    inLevelSelect = false
+    isLevelSelect = false
     inMenu = true
     player = null
     goal = null
-    placedObjects = []
+    objectList = []
   }
 
 }
@@ -1818,27 +1827,27 @@ function toHome(btn, machineBtn){
 function onoffButtons(i){
 
   if(i == 3){
-    music =!music
+    playerMusic =!playerMusic
 
-    if(music){
+    if(playerMusic){
       buttons[i].elt.src = buttonImages[i].defaultImg
-      console.log(music)
+      console.log(playerMusic)
       // playingmusic.play()
     } else {
       buttons[i].elt.src = buttonImages[i].clickedImg
-      console.log(music)
+      console.log(playerMusic)
       // playingmusic.pause()
     }
 
   } else if (i == 4){
-    sfx = !sfx
+    playerSfx = !playerSfx
 
-    if(sfx){
+    if(playerSfx){
       buttons[i].elt.src = buttonImages[i].defaultImg
-      console.log(sfx)
+      console.log(playerSfx)
     } else {
       buttons[i].elt.src = buttonImages[i].clickedImg
-      console.log(sfx)
+      console.log(playerSfx)
     }
   }
 
@@ -1847,23 +1856,23 @@ function onoffButtons(i){
 
 
 function reverseControls() {
-  if (controlSchemes[0] == 37) {
-    controlSchemes = [39, 68, 37, 65, 38, 87]
+  if (keyboardControls[0] == 37) {
+    keyboardControls = [39, 68, 37, 65, 38, 87]
 
   } else {
-    controlSchemes = [37, 65, 39, 68, 38, 87]
+    keyboardControls = [37, 65, 39, 68, 38, 87]
   }
 }
 
 
 function a6MoveBlock() {
-  placedObjects[1].osilating = true
-  placedObjects[2].osilating = true
+  objectList[1].osilating = true
+  objectList[2].osilating = true
 }
 
 function regulateOptMenu() {
   
-  if(showOptmenu){
+  if(showOptMenu){
       
     if (sliderActive){
       
