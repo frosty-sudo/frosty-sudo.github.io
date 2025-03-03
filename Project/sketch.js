@@ -4,7 +4,7 @@
 // Physics variables
 let bossSnakeLoop
 let inMenu = true, isLevelSelect = false
-let isEditMode = true;
+let isEditMode = false;
 let toolMode = "select"
 let objectList = []
 let selectedObject = null
@@ -349,7 +349,7 @@ class Platform {
           xoff -= 10
           
           // Detects whether or not a collision between a trap and a player has been made. If a collision happens the level will be reloaded aka the player dies and has to restart.
-          if (((abs(player.x - xoff) * 2 < (player.width + width)) && (abs(player.y - yoff) * 2 < (player.height + height))) && (fade.level <= 0 ||fade.level >= 255)) {
+          if (((abs(player.x - xoff) * 2 < (player.width + width)) && (abs(player.y - yoff) * 2 < (player.height + height))) && !fade.in /* (fade.level <= 0 ||fade.level >= 255) */) {
             reload()
           }
           break;
@@ -1323,6 +1323,7 @@ function draw() {
       } else {
         textFont(font)
         textSize(32)
+        textAlign(LEFT)
         text("V:0.5", 10, 32+14)  
   
       }
@@ -1438,35 +1439,93 @@ function draw() {
 
 function collisionHandeler(list) {
   // This collision handler takes the players position and makes it collide with all objects in the "list" provided as an argument. It prioritizes floors over walls but can still collide with both.
+
+
   for (let i = 0; i < list.length; i++) {
     let object = list[i]
     let position = object.getLocation()
     let x = position[0]
     let y = position[1]
-  
+
+
     if (doObjectCollide(player, object)) {
-
-
-
-
-      let velocities = object.getVelocities()
-      let vx = velocities[0]
-      let vy = velocities[1]
-      // Floor collision
-      if (player.y + player.height / 2 - (player.vy*deltaTime) <= y - object.height / 2 - vy*deltaTime+1) {
-        player.grounded = list[i];
-        player.vy = 0
-        player.y = y - object.height/2 - player.height/2
-      } else {
-        // Right side of object collision
-        if (player.x - player.width / 2 - (player.vx*deltaTime) >= x + object.width / 2 - vx*deltaTime) {
-          player.x = x + object.width/2 + player.width/2 + 2
+      let dx = (x - player.x) / (object.width/2)
+      let dy = (y - player.y) / (object.height/2)
+  
+      var absDX = abs(dx)
+      var absDY = abs(dy)
+  
+      if (abs(absDX - absDY) < 0.1) {
+        if (dx < 0) {
+          player.x = x + object.width / 2 + player.width / 2
+          player.vx = 0
+        } else {
+          player.x = x - object.width / 2 - player.width / 2
+          player.vx = 0
         }
-        // Left side of object collision
-        if (player.x + player.width / 2 - (player.vx*deltaTime) <= x - object.width / 2 - vx*deltaTime) {
-          player.x = x - object.width/2 - player.width/2 - 2
+
+        if (dy < 0) {
+          player.y = y + object.height / 2 + player.height / 2
+          player.vy = 0
+        } else {
+          player.y = y - object.height / 2 - player.height / 2
+          player.vy = 0
+        }
+      } else if (absDX > absDY) {
+        if (dx < 0) {
+          player.x = x + object.width / 2 + player.width / 2
+          player.vx = 0
+        } else {
+          player.x = x - object.width / 2 - player.width / 2
+          player.vx = 0
+        }
+      } else {
+        if (dy < 0) {
+          player.y = y + object.height / 2 + player.height / 2
+          // player.vx = 0
+          // player.grounded = list[i]
+
+        } else /* if (dy > 1.5)  */{
+          player.y = y - object.height / 2 - player.height / 2
+          player.vy = 0
+          player.grounded = list[i]
         }
       }
+    }
+    }
+
+
+
+
+  // for (let i = 0; i < list.length; i++) {
+  //   let object = list[i]
+  //   let position = object.getLocation()
+  //   let x = position[0]
+  //   let y = position[1]
+  
+  //   if (doObjectCollide(player, object)) {
+
+
+
+
+  //     let velocities = object.getVelocities()
+  //     let vx = velocities[0]
+  //     let vy = velocities[1]
+  //     // Floor collision
+  //     if (player.y + player.height / 2 - (player.vy*deltaTime) <= y - object.height / 2 - vy*deltaTime+1) {
+  //       player.grounded = list[i];
+  //       player.vy = 0
+  //       player.y = y - object.height/2 - player.height/2
+  //     } else {
+  //       // Right side of object collision
+  //       if (player.x - player.width / 2 - (player.vx*deltaTime) >= x + object.width / 2 - vx*deltaTime) {
+  //         player.x = x + object.width/2 + player.width/2 + 2
+  //       }
+  //       // Left side of object collision
+  //       if (player.x + player.width / 2 - (player.vx*deltaTime) <= x - object.width / 2 - vx*deltaTime) {
+  //         player.x = x - object.width/2 - player.width/2 - 2
+  //       }
+  //     }
 
       
 
@@ -1474,26 +1533,26 @@ function collisionHandeler(list) {
 
 
 
-      // // Colliding with floor
-      // if ((y - object.height / 2)-(player.y + player.height / 2) /* + player.vy*deltaTime */ > -5) {
-      //   player.grounded = list[i];
-      //   player.vy = 0
-      //   player.y = y - object.height/2 - player.height/2 
-      // }
-      // else {
-      //   // Colliding with object left side
-      //   if ((x - object.width / 2)-(player.x + player.width / 2) + player.vx > -10) {
-      //     //player.vx = 0
-      //     player.x = x - object.width/2 - player.width/2
-      //   }
-      //   // Colliding with object right side
-      //   if ((x + object.width / 2)-(player.x - player.width / 2) + player.vx < 10) {
-      //     //player.vx = 0
-      //     player.x = x + object.width/2 + player.width/2
-      //   }
-      // }
-    }
-  }
+  //     // // Colliding with floor
+  //     // if ((y - object.height / 2)-(player.y + player.height / 2) /* + player.vy*deltaTime */ > -5) {
+  //     //   player.grounded = list[i];
+  //     //   player.vy = 0
+  //     //   player.y = y - object.height/2 - player.height/2 
+  //     // }
+  //     // else {
+  //     //   // Colliding with object left side
+  //     //   if ((x - object.width / 2)-(player.x + player.width / 2) + player.vx > -10) {
+  //     //     //player.vx = 0
+  //     //     player.x = x - object.width/2 - player.width/2
+  //     //   }
+  //     //   // Colliding with object right side
+  //     //   if ((x + object.width / 2)-(player.x - player.width / 2) + player.vx < 10) {
+  //     //     //player.vx = 0
+  //     //     player.x = x + object.width/2 + player.width/2
+  //     //   }
+  //     // }
+  //   }
+  // }
 }
 
 // Its a simple function that returns true if the player and object collide.
