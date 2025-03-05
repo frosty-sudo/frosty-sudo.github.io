@@ -2,6 +2,9 @@
 // Makes all of the appropriate variables.
 
 // Physics variables
+let version = "0.5.1"
+
+
 let bossSnakeLoop
 let inMenu = true, isLevelSelect = false
 let isEditMode = false;
@@ -350,6 +353,7 @@ class Platform {
           
           // Detects whether or not a collision between a trap and a player has been made. If a collision happens the level will be reloaded aka the player dies and has to restart.
           if (((abs(player.x - xoff) * 2 < (player.width + width)) && (abs(player.y - yoff) * 2 < (player.height + height))) && !fade.in /* (fade.level <= 0 ||fade.level >= 255) */) {
+            console.log("Killed by spike")
             reload()
           }
           break;
@@ -368,6 +372,7 @@ class Platform {
 
           // Detects whether or not a collision between a trap and a player has been made. If a collision happens the level will be reloaded aka the player dies and has to restart.
           if (((abs(player.x - xoff) * 2 < (player.width + width)) && (abs(player.y - yoff) * 2 < (player.height + height))) && (fade.level <= 0 ||fade.level >= 255)) {
+            console.log("Killed by snake")
             reload()
           }
 
@@ -517,7 +522,6 @@ class Player extends Platform {
     let vx = velocities[0]
     let vy = velocities[1]
 
-    
 
 
     if (keyIsDown(keyboardControls[0]) || keyIsDown(keyboardControls[1])) {
@@ -535,6 +539,7 @@ class Player extends Platform {
     }
     // This function "reloads" the level effectively making it restart.
     if (keyIsDown(82) && !fade.in) {
+      console.log("Reload kill")
       reload()
     }
     noStroke()
@@ -575,8 +580,14 @@ class Player extends Platform {
       }
     }
 
+    if (fade.in) {
+      this.vx = 0
+      this.vy = 0
+    } else {
+      this.vy = this.vy - this.gravity*deltaTime
+    }
+
     // End math that moves the player.
-    this.vy = this.vy - this.gravity*deltaTime
     this.vx = this.vx + vx
     this.vy = this.vy + vy
     this.x = this.x + this.vx*deltaTime
@@ -588,6 +599,7 @@ class Player extends Platform {
     
     if (this.y > 450 && !fade.in) {
       player.y = -1000000
+      console.log("Killed by death barrier")
       reload()
     }
 
@@ -752,7 +764,6 @@ function preload() {
 
 // The reload function does as it implies. It reloads the level loader making it switch or keep the level. Added functionality added for the boss level. TODO change this to a dynamic system instead of the clusterfuck that will become of it.
 function reload() {
-  console.log("death")
   deathSound.play()
   keyboardControls = [39, 68, 37, 65, 38, 87]
   if (currentLevel == 0) {
@@ -918,6 +929,7 @@ function draw() {
       text("Time: " + (time/1000).toFixed(2), 400, 250)
       text("High score time: " + (Number(localStorage.getItem("highScore"))/1000).toFixed(2), 400, 400-5)
     }
+    regulateOptMenu()
     // toHome()
     return
   }
@@ -1253,6 +1265,7 @@ function draw() {
               let y = position[1];
 
               if (bossCycleArray[row][column] == bossLength) {
+                console.log("Killed by boss snake")
                 reload();
               }
 
@@ -1324,7 +1337,7 @@ function draw() {
         textFont(font)
         textSize(32)
         textAlign(LEFT)
-        text("V:0.5", 10, 32+14)  
+        text("V:" + version, 10, 32+14)  
   
       }
 
@@ -1455,7 +1468,7 @@ function collisionHandeler(list) {
       var absDX = abs(dx)
       var absDY = abs(dy)
   
-      if (abs(absDX - absDY) < 0.1) {
+      if (abs(absDX - absDY) < 0.3) {
         if (dx < 0) {
           player.x = x + object.width / 2 + player.width / 2
           player.vx = 0
@@ -1464,13 +1477,13 @@ function collisionHandeler(list) {
           player.vx = 0
         }
 
-        if (dy < 0) {
-          player.y = y + object.height / 2 + player.height / 2
-          player.vy = 0
-        } else {
-          player.y = y - object.height / 2 - player.height / 2
-          player.vy = 0
-        }
+        // if (dy < 0) {
+        //   player.y = y + object.height / 2 + player.height / 2
+        //   // player.vy = 0
+        // } else {
+        //   player.y = y - object.height / 2 - player.height / 2
+        //   player.vy = 0
+        // }
       } else if (absDX > absDY) {
         if (dx < 0) {
           player.x = x + object.width / 2 + player.width / 2
