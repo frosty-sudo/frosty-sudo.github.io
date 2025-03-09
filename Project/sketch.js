@@ -2,7 +2,7 @@
 // Makes all of the appropriate variables.
 
 // Physics variables
-let version = "0.5.1"
+let version = "0.5.2"
 
 
 let bossSnakeLoop
@@ -227,15 +227,33 @@ class Platform {
     let distanceToGoal = sqrt((this.fx-this.#x)**2 + (this.fy-this.#y)**2)
     let distanceToStart = sqrt((this.startX-this.#x)**2 + (this.startY-this.#y)**2)
     if (this.osilating) {
-      if (distanceToGoal < 1) {
-        this.#isreturning = true
-      } else if (distanceToStart < 1) {
-        this.#isreturning = false
+      /* if (this.#y > 0) {
+        console.log("Test1: ", this.fx, this.#x, !this.#isreturning)
+        console.log("Test2: ", this.startX, this.#x, this.#isreturning)
+      } */
+      if ((((this.fx > this.startX && this.fx < this.#x) || (this.fx < this.startX && this.fx > this.#x)) && !this.#isreturning) 
+       || (((this.fx > this.startX && this.startX > this.#x) || (this.fx < this.startX && this.startX < this.#x)) && this.#isreturning)) {
+        this.#isreturning = !this.#isreturning
+      } else if ((((this.fy > this.startY && this.fy < this.#y) || (this.fy < this.startY && this.fy > this.#y)) && !this.#isreturning) 
+        || (((this.fy > this.startY && this.startY > this.#y) || (this.fy < this.startY && this.startY < this.#y)) && this.#isreturning)) {
+        this.#isreturning = !this.#isreturning
       }
     } else {
-      if (distanceToGoal < 5) {
+/*       if (distanceToGoal < 5) {
         vx = 0
         vy = 0
+      } */
+
+      if ((((this.fx > this.startX && this.fx <= this.#x) || (this.fx < this.startX && this.fx >= this.#x)))) {
+        vx = 0
+        vy = 0
+        this.#x = this.fx
+        this.#y = this.fy
+      } else if ((((this.fy > this.startY && this.fy <= this.#y) || (this.fy < this.startY && this.fy >= this.#y)))) {
+        vx = 0
+        vy = 0
+        this.#x = this.fx
+        this.#y = this.fy
       }
     }
 
@@ -641,6 +659,7 @@ class level{
 
   load() {
     objectList = []
+    keyboardControls = [39, 68, 37, 65, 38, 87]
     fetch('./levels/'+this.levelName+'.json')
     .then((response) => response.json())
     .then((json) => {
@@ -875,6 +894,10 @@ function draw() {
   // }
 
   deltaTime = deltaTime > 100 ? 0 : deltaTime
+
+  if (showOptMenu) {
+    deltaTime = 0
+  }
   outputVolume(volume)
   levelSelectFunc();
   menuFunc();
@@ -1688,15 +1711,6 @@ function handleMouseOut(btn) {
 }
 function handleButtonClick(i) {
 
-  buttons[i].elt.src = buttonImages[i].clickedImg
-
-  let clickSound = createAudio('assets/click-buttons-ui-menu-sounds-effects-button-2-203594.mp3')
-  clickSound.volume(volume)
-  clickSound.play()
-
-  setTimeout(() => {
-    buttons[i].elt.src = buttonImages[i].defaultImg
-  }, 250)
 
   if (i == 0) {
     console.log('Start Game')
@@ -1713,7 +1727,7 @@ function handleButtonClick(i) {
     console.log('Quit Game')
     buttons[i].elt.src = buttonImages[i].clickedImg
   
-  } else if (i== 2){
+  } else if (i== 2 && !showOptMenu){
     console.log('Options')
     showOptMenu = !showOptMenu
 
@@ -1751,13 +1765,23 @@ function handleButtonClick(i) {
     toHome()
     
 
-  } else if (i == 7){
+  } else if (i == 7 && !showOptMenu){
 
-    
     toHome()
 
-
+  } else if (showOptMenu) {
+    return
   }
+
+  buttons[i].elt.src = buttonImages[i].clickedImg
+
+  let clickSound = createAudio('assets/click-buttons-ui-menu-sounds-effects-button-2-203594.mp3')
+  clickSound.volume(volume)
+  clickSound.play()
+
+  setTimeout(() => {
+    buttons[i].elt.src = buttonImages[i].defaultImg
+  }, 250)
 
 }
 function startFadeIn() {
@@ -1844,7 +1868,6 @@ function handleMouseOutMachine(machineBtn, unlockedImg) {
 }
 
 function toHome(btn, machineBtn){
-
 
   if (isLevelSelect) {
     isLevelSelect = false

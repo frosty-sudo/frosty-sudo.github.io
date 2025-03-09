@@ -22,7 +22,7 @@
     {
         "height": 42,
         "width": 100,
-        "startX": 549.5,
+        "startX": 550,
         "startY": 350,
         "fx": null,
         "fy": null,
@@ -57,7 +57,7 @@
         "width": 100,
         "startX": 50,
         "startY": 350,
-        "fx": 655,
+        "fx": 650,
         "fy": 350,
         "speed": 10,
         "osilating": false,
