@@ -1,0 +1,255 @@
+[
+    {
+        "height": 42,
+        "width": 175,
+        "startX": 87.5,
+        "startY": 350,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": true,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 21,
+        "width": 33.33,
+        "startX": 191.665,
+        "startY": 360.5,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 42,
+        "width": 175,
+        "startX": 295.83,
+        "startY": 350,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 21,
+        "width": 76,
+        "startX": 404,
+        "startY": 360.5,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 42,
+        "width": 175,
+        "startX": 504.15999999999997,
+        "startY": 350,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 21,
+        "width": 86,
+        "startX": 630,
+        "startY": 360.5,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 42,
+        "width": 175,
+        "startX": 712.5,
+        "startY": 350,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": true,
+        "trapArray": []
+    },
+    {
+        "height": 14,
+        "width": 14,
+        "startX": 807,
+        "startY": 10,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": [
+            {
+                "type": "shooter",
+                "x": 0,
+                "y": 0,
+                "facing": 37,
+                "shootingRate": 4200
+            },
+            {
+                "type": "shooter",
+                "x": 10,
+                "y": 15,
+                "facing": 37,
+                "shootingRate": 4200
+            },
+            {
+                "type": "shooter",
+                "x": 20,
+                "y": 30,
+                "facing": 37,
+                "shootingRate": 4200
+            },
+            {
+                "type": "shooter",
+                "x": 30,
+                "y": 45,
+                "facing": 37,
+                "shootingRate": 4200
+            },
+            {
+                "type": "shooter",
+                "x": 40,
+                "y": 60,
+                "facing": 37,
+                "shootingRate": 4200
+            },
+            {
+                "type": "shooter",
+                "x": 50,
+                "y": 75,
+                "facing": 37,
+                "shootingRate": 4200
+            },
+            {
+                "type": "shooter",
+                "x": 60,
+                "y": 90,
+                "facing": 37,
+                "shootingRate": 4200
+            },
+            {
+                "type": "shooter",
+                "x": 70,
+                "y": 105,
+                "facing": 37,
+                "shootingRate": 4200
+            },
+            {
+                "type": "shooter",
+                "x": 80,
+                "y": 120,
+                "facing": 37,
+                "shootingRate": 4200
+            },
+            {
+                "type": "shooter",
+                "x": 90,
+                "y": 135,
+                "facing": 37,
+                "shootingRate": 4200
+            },
+            {
+                "type": "shooter",
+                "x": 100,
+                "y": 150,
+                "facing": 37,
+                "shootingRate": 4200
+            },
+            {
+                "type": "shooter",
+                "x": 110,
+                "y": 165,
+                "facing": 37,
+                "shootingRate": 4200
+            },
+            {
+                "type": "shooter",
+                "x": 120,
+                "y": 180,
+                "facing": 37,
+                "shootingRate": 4200
+            },
+            {
+                "type": "shooter",
+                "x": 130,
+                "y": 195,
+                "facing": 37,
+                "shootingRate": 4200
+            },
+            {
+                "type": "shooter",
+                "x": 140,
+                "y": 210,
+                "facing": 37,
+                "shootingRate": 4200
+            },
+            {
+                "type": "shooter",
+                "x": 150,
+                "y": 225,
+                "facing": 37,
+                "shootingRate": 4200
+            },
+            {
+                "type": "shooter",
+                "x": 160,
+                "y": 240,
+                "facing": 37,
+                "shootingRate": 4200
+            },
+            {
+                "type": "shooter",
+                "x": 170,
+                "y": 255,
+                "facing": 37,
+                "shootingRate": 4200
+            },
+            {
+                "type": "shooter",
+                "x": 180,
+                "y": 270,
+                "facing": 37,
+                "shootingRate": 4200
+            },
+            {
+                "type": "shooter",
+                "x": 190,
+                "y": 285,
+                "facing": 37,
+                "shootingRate": 4200
+            },
+            {
+                "type": "shooter",
+                "x": 200,
+                "y": 300,
+                "facing": 37,
+                "shootingRate": 4200
+            }
+
+        ]
+    }
+]

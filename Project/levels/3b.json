@@ -1,0 +1,100 @@
+[
+    {
+        "height": 24,
+        "width": 70,
+        "startX": 41,
+        "startY": 347,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": true,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 21,
+        "width": 59,
+        "startX": 237.5,
+        "startY": 220.5,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 22,
+        "width": 55,
+        "startX": 534.5,
+        "startY": 326,
+        "fx": 534.5,
+        "fy": 500,
+        "speed": 100,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 26,
+        "width": 57,
+        "startX": 669.5,
+        "startY": 252,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 23,
+        "width": 49,
+        "startX": 753.5,
+        "startY": 155.5,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": true,
+        "trapArray": []
+    },
+    {
+        "height": 21,
+        "width": 65,
+        "startX": 389.5,
+        "startY": 263.5,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 15,
+        "width": 32,
+        "startX": 660,
+        "startY": 251.5,
+        "fx": 660,
+        "fy": 246.5,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": [
+            {
+                "type": "spike",
+                "x": 0,
+                "y": -7.5,
+                "facing": 38
+            }
+        ]
+    }
+]

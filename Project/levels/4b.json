@@ -1,0 +1,126 @@
+[
+    {
+        "height": 28,
+        "width": 46,
+        "startX": 149,
+        "startY": 380,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": true,
+        "goal": false,
+        "trapArray": [
+            {
+                "type": "button",
+                "x": 0,
+                "y": -19,
+                "facing": 38,
+                "lambda": [
+                    "reverseControls"
+                ]
+            }
+        ]
+    },
+    {
+        "height": 28,
+        "width": 93,
+        "startX": 618.5,
+        "startY": 280,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 28,
+        "width": 74,
+        "startX": 669,
+        "startY": 75,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": true,
+        "trapArray": []
+    },
+    {
+        "height": 30,
+        "width": 77,
+        "startX": 164.5,
+        "startY": 151,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 90,
+        "width": 30,
+        "startX": 387.5,
+        "startY": 70,
+        "fx": 387.5,
+        "fy": 300,
+        "speed": 40,
+        "osilating": true,
+        "spawner": false,
+        "goal": false,
+        "trapArray": [
+            {
+                "type": "spike",
+                "x": 0,
+                "y": -45,
+                "facing": 38
+            },
+            {
+                "type": "spike",
+                "x": -14,
+                "y": -30,
+                "facing": 37
+            },
+            {
+                "type": "spike",
+                "x": -14,
+                "y": 0,
+                "facing": 37
+            },
+            {
+                "type": "spike",
+                "x": -14,
+                "y": 30,
+                "facing": 37
+            },
+            {
+                "type": "spike",
+                "x": 14,
+                "y": -30,
+                "facing": 39
+            },
+            {
+                "type": "spike",
+                "x": 14,
+                "y": 0,
+                "facing": 39
+            },
+            {
+                "type": "spike",
+                "x": 14,
+                "y": 30,
+                "facing": 39
+            },
+            {
+                "type": "spike",
+                "x": 0,
+                "y": 45,
+                "facing": 40
+            }
+        ]
+    }
+]

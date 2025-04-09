@@ -1,0 +1,84 @@
+[
+    {
+        "height": 26,
+        "width": 800,
+        "startX": 400,
+        "startY": 387,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": true,
+        "goal": false,
+        "trapArray": [
+            {
+                "type": "button",
+                "x": 50,
+                "y": -13,
+                "facing": 38,
+                "lambda": [
+                    "resetButton",
+                    "moveBlockUp"
+                ]
+            },
+            {
+                "type": "button",
+                "x": -50,
+                "y": -13,
+                "facing": 38,
+                "lambda": [
+                    "resetButton",
+                    "moveBlockDown"
+                ]
+            },
+            {
+                "type": "button",
+                "x": 0,
+                "y": -13,
+                "facing": 38,
+                "lambda": [
+                    "shoot"
+                ]
+            }
+        ]
+    },
+    {
+        "height": 26,
+        "width": 800,
+        "startX": 400,
+        "startY": 300,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 100,
+        "width": 32,
+        "startX": 45,
+        "startY": 130,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": false,
+        "trapArray": []
+    },
+    {
+        "height": 14,
+        "width": 19,
+        "startX": 5150000.5,
+        "startY": 201,
+        "fx": null,
+        "fy": null,
+        "speed": 10,
+        "osilating": false,
+        "spawner": false,
+        "goal": true,
+        "trapArray": []
+    }
+]
